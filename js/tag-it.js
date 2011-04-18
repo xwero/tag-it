@@ -9,12 +9,33 @@
 		const SPACE			= 32;
 		const COMMA			= 44;
 
+                options.autocomplete.select: function(event,ui){
+				if (is_new (ui.item.value)) {
+					create_choice (ui.item.value);
+				}
+				// Cleaning the input.
+				tag_input.val("");
+
+				// Preventing the tag input to be update with the chosen value.
+				return false;
+			}
+
 		// add the tagit CSS class.
 		el.addClass("tagit");
+
+                // get existing li elements
+                var lis = el.children('li');
 
 		// create the input field.
 		var html_input_field = "<li class=\"tagit-new\"><input class=\"tagit-input\" type=\"text\" /></li>\n";
 		el.html (html_input_field);
+
+                if(lis.length > 0)
+                {
+                       lis.each(function(){
+                             create_choice.call(this,$(this).text());
+                       });
+                }
 
 		tag_input		= el.children(".tagit-new").children(".tagit-input");
 
@@ -44,7 +65,7 @@
 
 				var typed = tag_input.val();
 				typed = typed.replace(/,+$/,"");
-				typed = typed.trim();
+				typed = $.trim(typed);
 
 				if (typed != "") {
 					if (is_new (typed)) {
@@ -56,19 +77,7 @@
 			}
 		});
 
-		tag_input.autocomplete({
-			source: options.availableTags, 
-			select: function(event,ui){
-				if (is_new (ui.item.value)) {
-					create_choice (ui.item.value);
-				}
-				// Cleaning the input.
-				tag_input.val("");
-
-				// Preventing the tag input to be update with the chosen value.
-				return false;
-			}
-		});
+		tag_input.autocomplete(options.autocomplete);
 
 		function is_new (value){
 			var is_new = true;
@@ -91,10 +100,6 @@
 			$(el).insertBefore (li_search_tags);
 			this.tag_input.val("");
 		}
-	};
-
-	String.prototype.trim = function() {
-		return this.replace(/^\s+|\s+$/g,"");
 	};
 
 })(jQuery);
