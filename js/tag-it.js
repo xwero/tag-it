@@ -8,36 +8,37 @@
 		const ENTER			= 13;
 		const SPACE			= 32;
 		const COMMA			= 44;
-
-                options.autocomplete.select: function(event,ui){
-				if (is_new (ui.item.value)) {
-					create_choice (ui.item.value);
-				}
-				// Cleaning the input.
-				tag_input.val("");
-
-				// Preventing the tag input to be update with the chosen value.
-				return false;
+		
+		// add select behaviour
+		options.autocomplete.select = function(event,ui){
+			if (is_new (ui.item.value)) {
+				create_choice (ui.item.value);
 			}
+			// Cleaning the input.
+			tag_input.val("");
+
+			// Preventing the tag input to be update with the chosen value.
+			return false;
+		}
 
 		// add the tagit CSS class.
 		el.addClass("tagit");
 
-                // get existing li elements
-                var lis = el.children('li');
+		// get existing li elements
+		var lis = el.children('li');
 
 		// create the input field.
 		var html_input_field = "<li class=\"tagit-new\"><input class=\"tagit-input\" type=\"text\" /></li>\n";
 		el.html (html_input_field);
+		
+		tag_input	= el.children(".tagit-new").children(".tagit-input");
 
-                if(lis.length > 0)
-                {
-                       lis.each(function(){
-                             create_choice.call(this,$(this).text());
-                       });
-                }
-
-		tag_input		= el.children(".tagit-new").children(".tagit-input");
+		if(lis.length > 0)
+		{
+			lis.each(function(){
+				create_choice.call(this.tag_input,$(this).text());
+			});
+		}
 
 		$(this).click(function(e){
 			if (e.target.tagName == 'A') {
