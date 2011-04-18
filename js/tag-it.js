@@ -2,12 +2,11 @@
 
 	$.fn.tagit = function(options) {
 
-		var el = this;
-
-		const BACKSPACE		= 8;
-		const ENTER			= 13;
-		const SPACE			= 32;
-		const COMMA			= 44;
+		var el			= this,
+			BACKSPACE	= 8,
+			ENTER		= 13,
+			SPACE		= 32,
+			COMMA		= 44;
 		
 		// add select behaviour
 		options.autocomplete.select = function(event,ui){
@@ -25,7 +24,11 @@
 		el.addClass("tagit");
 
 		// get existing li elements
-		var lis = el.children('li');
+		var lis = [];
+		
+		el.children('li').each(function(){
+			lis.push($(this).text());
+		});
 
 		// create the input field.
 		var html_input_field = "<li class=\"tagit-new\"><input class=\"tagit-input\" type=\"text\" /></li>\n";
@@ -35,9 +38,9 @@
 
 		if(lis.length > 0)
 		{
-			lis.each(function(){
-				create_choice.call(this.tag_input,$(this).text());
-			});
+			for(i=0,value='';value=lis[i];i++){
+				create_choice.call(this.tag_input,value);
+			}
 		}
 
 		$(this).click(function(e){
@@ -54,14 +57,8 @@
 		});
 
 		tag_input.keypress(function(event){
-			if (event.which == BACKSPACE) {
-				if (tag_input.val() == "") {
-					// When backspace is pressed, the last tag is deleted.
-					$(el).children(".tagit-choice:last").remove();
-				}
-			}
 			// Comma/Space/Enter are all valid delimiters for new tags.
-			else if (event.which == COMMA || event.which == SPACE || event.which == ENTER) {
+			if (event.which == COMMA || event.which == SPACE || event.which == ENTER) {
 				event.preventDefault();
 
 				var typed = tag_input.val();
@@ -74,6 +71,15 @@
 					}
 					// Cleaning the input.
 					tag_input.val("");
+				}
+			}
+		});
+		
+		tag_input.keyup(function(event){
+			if (event.which == BACKSPACE) {
+				if (tag_input.val() == "") {
+					// When backspace is pressed, the last tag is deleted.
+					$(el).children(".tagit-choice:last").remove();
 				}
 			}
 		});
