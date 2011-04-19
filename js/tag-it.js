@@ -8,6 +8,7 @@
 			SPACE		= 32,
 			COMMA		= 44;
 		
+		options.name = options.name || 'item[tags][]';
 		// add select behaviour
 		options.autocomplete.select = function(event,ui){
 			if (is_new (ui.item.value)) {
@@ -44,9 +45,10 @@
 		}
 
 		$(this).click(function(e){
-			if (e.target.tagName == 'A') {
-				// Removes a tag when the little 'x' is clicked.
+			if (e.target.tagName == 'BUTTON') {
+				// Removes a tag when clicked.
 				// Event is binded to the UL, otherwise a new tag (LI > A) wouldn't have this event attached to it.
+				e.preventDefault();
 				$(e.target).parent().remove();
 			}
 			else {
@@ -72,6 +74,8 @@
 					// Cleaning the input.
 					tag_input.val("");
 				}
+
+				tag_input.autocomplete('close');
 			}
 		});
 		
@@ -96,15 +100,26 @@
 			})
 			return is_new;
 		}
+
 		function create_choice (value){
-			var el = "";
-			el  = "<li class=\"tagit-choice\">\n";
-			el += value + "\n";
-			el += "<a class=\"close\">x</a>\n";
-			el += "<input type=\"hidden\" style=\"display:none;\" value=\""+value+"\" name=\"item[tags][]\">\n";
-			el += "</li>\n";
-			var li_search_tags = this.tag_input.parent();
-			$(el).insertBefore (li_search_tags);
+			var input = $('<input/>',{
+			type: 'hidden',
+			    	'value':value,
+			    	name:options.name
+			}),
+			button = $('<button/>',{
+				text: value	       
+			}).button({
+				icons: {
+					secondary: 'ui-icon-minus'
+				}	
+			}),
+			li = $('<li>',{
+				class:'tagit-choice'
+			}).append(input).append(button),
+			li_search_tags = this.tag_input.parent();
+
+			$(li).insertBefore (li_search_tags);
 			this.tag_input.val("");
 		}
 	};
