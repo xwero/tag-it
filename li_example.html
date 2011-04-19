@@ -6,11 +6,11 @@
 
 	<link href="css/reset.css" rel="stylesheet" type="text/css" />
 	<link href="css/master.css" rel="stylesheet" type="text/css" />
-	<link href="css/jquery-ui/jquery.ui.autocomplete.custom.css" rel="stylesheet" type="text/css"  />
+	<link href="css/jquery-ui/jquery-ui-1.8.11.custom.css" rel="stylesheet" type="text/css"  />
+	<link href="css/jquery-ui/tag-it.css" rel="stylesheet" type="text/css"  />
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/jquery-ui/jquery-ui-1.8.core-and-interactions.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="js/jquery-ui/jquery-ui-1.8.autocomplete.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery/jquery-1.5.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery-ui/jquery-ui-1.8.11.custom.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/tag-it.js" type="text/javascript" charset="utf-8"></script>
 
 	<script>
@@ -19,10 +19,6 @@
 			autocomplete : {
 				source: ["c++", "java", "php", "coldfusion", "javascript", "asp", "ruby", "python", "c", "scala", "groovy", "haskell", "perl"]
 			}
-		});
-		
-		$('#mytags li').each(function(index,el){
-		console.log($(el).text());
 		});
 	});
 	</script>
