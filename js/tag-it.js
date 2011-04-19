@@ -8,7 +8,7 @@
 			SPACE		= 32,
 			COMMA		= 44;
 		
-		options.name = options.name || 'item[tags][]';
+		options.name = options.name || $(el).attr('id')+'[]';
 		// add select behaviour
 		options.autocomplete.select = function(event,ui){
 			if (is_new (ui.item.value)) {
@@ -35,7 +35,7 @@
 		var html_input_field = "<li class=\"tagit-new\"><input class=\"tagit-input\" type=\"text\" /></li>\n";
 		el.html (html_input_field);
 		
-		tag_input	= el.children(".tagit-new").children(".tagit-input");
+		var tag_input	= el.children(".tagit-new").children(".tagit-input");
 
 		if(lis.length > 0)
 		{
@@ -92,7 +92,7 @@
 
 		function is_new (value){
 			var is_new = true;
-			this.tag_input.parents("ul").children(".tagit-choice").each(function(i){
+			tag_input.parents("ul").children(".tagit-choice").each(function(i){
 				n = $(this).children("input").val();
 				if (value == n) {
 					is_new = false;
@@ -117,10 +117,10 @@
 			li = $('<li>',{
 				class:'tagit-choice'
 			}).append(input).append(button),
-			li_search_tags = this.tag_input.parent();
+			li_search_tags = tag_input.parent();
 
 			$(li).insertBefore (li_search_tags);
-			this.tag_input.val("");
+			tag_input.val("");
 		}
 	};
 
