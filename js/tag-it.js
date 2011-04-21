@@ -3,26 +3,30 @@
 	$.fn.tagit = function(options) {
 
 		var el			= this,
+			options		= options || {},
 			BACKSPACE	= 8,
 			ENTER		= 13,
 			SPACE		= 32,
 			COMMA		= 44;
 		
 		options.name = options.name || $(el).attr('id')+'[]';
-		// add select behaviour
-		options.autocomplete.select = function(event,ui){
-			if (is_new (ui.item.value)) {
-				create_choice (ui.item.value);
-			}
-			// Cleaning the input.
-			tag_input.val("");
+		
+		if(options.autocomplete){
+			// add select behaviour
+			options.autocomplete.select = function(event,ui){
+				if (is_new (ui.item.value)) {
+					create_choice (ui.item.value);
+				}
+				// Cleaning the input.
+				tag_input.val("");
 
-			// Preventing the tag input to be update with the chosen value.
-			return false;
+				// Preventing the tag input to be update with the chosen value.
+				return false;
+			}
 		}
 
 		// add the tagit CSS class.
-		el.addClass("tagit");
+		el.addClass("tagit ui-widget-content ui-corner-all ui-helper-clearfix");
 
 		// get existing li elements
 		var lis = [];
@@ -32,10 +36,10 @@
 		});
 
 		// create the input field.
-		var html_input_field = "<li class=\"tagit-new\"><input class=\"tagit-input\" type=\"text\" /></li>\n";
+		var html_input_field = '<li style="float:left"><input class="ui-widget-content ui-button-text" style="border:0" type="text" /></li>';
 		el.html (html_input_field);
-		
-		var tag_input	= el.children(".tagit-new").children(".tagit-input");
+
+		var tag_input	= el.children("li").first().children("input").first();
 
 		if(lis.length > 0)
 		{
@@ -87,8 +91,10 @@
 				}
 			}
 		});
-
-		tag_input.autocomplete(options.autocomplete);
+		
+		if(typeof options.autocomplete === undefined){
+			tag_input.autocomplete(options.autocomplete);
+		}
 
 		function is_new (value){
 			var is_new = true;
@@ -115,7 +121,8 @@
 				}	
 			}),
 			li = $('<li>',{
-				class:'tagit-choice'
+				class:'tagit-choice',
+				style:'float:left'
 			}).append(input).append(button),
 			li_search_tags = tag_input.parent();
 
